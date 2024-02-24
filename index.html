@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        #map {
+            width: 1263px;
+            height: 813px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/HuntapPetoboBangunandanAksesoris_1.js"></script>
+        <script src="data/HuntapPetoboPipa_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-0.9423269220192325,119.93361807488135],[-0.9328763541886276,119.9483124842949]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 0.5,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        function pop_HuntapPetoboBangunandanAksesoris_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nama'] !== null ? autolinker.link(feature.properties['Nama'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Jumlah'] !== null ? autolinker.link(feature.properties['Jumlah'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Uk/Tipe'] !== null ? autolinker.link(feature.properties['Uk/Tipe'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Keterangan'] !== null ? autolinker.link(feature.properties['Keterangan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_HuntapPetoboBangunandanAksesoris_1_0(feature) {
+            switch(String(feature.properties['Nama'])) {
+                case 'Gate Valve':
+                    return {
+                pane: 'pane_HuntapPetoboBangunandanAksesoris_1',
+                radius: 6.799999999999999,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Reservoir':
+                    return {
+                pane: 'pane_HuntapPetoboBangunandanAksesoris_1',
+                shape: 'diamond',
+                radius: 8.8,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,123,182,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Tee':
+                    return {
+                pane: 'pane_HuntapPetoboBangunandanAksesoris_1',
+                shape: 'diamond',
+                radius: 2.0,
+                opacity: 1,
+                color: 'rgba(128,17,25,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,30,42,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_HuntapPetoboBangunandanAksesoris_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(173,101,224,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_HuntapPetoboBangunandanAksesoris_1');
+        map.getPane('pane_HuntapPetoboBangunandanAksesoris_1').style.zIndex = 401;
+        map.getPane('pane_HuntapPetoboBangunandanAksesoris_1').style['mix-blend-mode'] = 'normal';
+        var layer_HuntapPetoboBangunandanAksesoris_1 = new L.geoJson(json_HuntapPetoboBangunandanAksesoris_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_HuntapPetoboBangunandanAksesoris_1',
+            layerName: 'layer_HuntapPetoboBangunandanAksesoris_1',
+            pane: 'pane_HuntapPetoboBangunandanAksesoris_1',
+            onEachFeature: pop_HuntapPetoboBangunandanAksesoris_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_HuntapPetoboBangunandanAksesoris_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_HuntapPetoboBangunandanAksesoris_1);
+        map.addLayer(layer_HuntapPetoboBangunandanAksesoris_1);
+        function pop_HuntapPetoboPipa_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Diameter'] !== null ? autolinker.link(feature.properties['Diameter'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Panjang'] !== null ? autolinker.link(feature.properties['Panjang'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Status'] !== null ? autolinker.link(feature.properties['Status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_HuntapPetoboPipa_2_0(feature) {
+            switch(String(feature.properties['Diameter'])) {
+                case '63':
+                    return {
+                pane: 'pane_HuntapPetoboPipa_2',
+                opacity: 1,
+                color: 'rgba(54,227,20,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '90':
+                    return {
+                pane: 'pane_HuntapPetoboPipa_2',
+                opacity: 1,
+                color: 'rgba(235,110,29,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '110':
+                    return {
+                pane: 'pane_HuntapPetoboPipa_2',
+                opacity: 1,
+                color: 'rgba(101,180,207,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case '160':
+                    return {
+                pane: 'pane_HuntapPetoboPipa_2',
+                opacity: 1,
+                color: 'rgba(55,76,235,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_HuntapPetoboPipa_2',
+                opacity: 1,
+                color: 'rgba(203,57,108,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_HuntapPetoboPipa_2');
+        map.getPane('pane_HuntapPetoboPipa_2').style.zIndex = 402;
+        map.getPane('pane_HuntapPetoboPipa_2').style['mix-blend-mode'] = 'normal';
+        var layer_HuntapPetoboPipa_2 = new L.geoJson(json_HuntapPetoboPipa_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_HuntapPetoboPipa_2',
+            layerName: 'layer_HuntapPetoboPipa_2',
+            pane: 'pane_HuntapPetoboPipa_2',
+            onEachFeature: pop_HuntapPetoboPipa_2,
+            style: style_HuntapPetoboPipa_2_0,
+        });
+        bounds_group.addLayer(layer_HuntapPetoboPipa_2);
+        map.addLayer(layer_HuntapPetoboPipa_2);
+        setBounds();
+        var i = 0;
+        layer_HuntapPetoboBangunandanAksesoris_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((exp_label_HuntapPetoboBangunandanAksesoris_1_eval_expression(context) !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Arial\', sans-serif;">' + exp_label_HuntapPetoboBangunandanAksesoris_1_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_HuntapPetoboBangunandanAksesoris_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_HuntapPetoboPipa_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((exp_label_HuntapPetoboPipa_2_eval_expression(context) !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Arial\', sans-serif;">' + exp_label_HuntapPetoboPipa_2_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_HuntapPetoboPipa_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_HuntapPetoboBangunandanAksesoris_1,layer_HuntapPetoboPipa_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_HuntapPetoboBangunandanAksesoris_1,layer_HuntapPetoboPipa_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_HuntapPetoboBangunandanAksesoris_1,layer_HuntapPetoboPipa_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_HuntapPetoboBangunandanAksesoris_1,layer_HuntapPetoboPipa_2]);
+        });
+        </script>
+    </body>
+</html>
