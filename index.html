@@ -6,12 +6,14 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
         <style>
-        #map {
-            width: 1263px;
-            height: 813px;
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
         }
         </style>
         <title></title>
@@ -20,7 +22,7 @@
         <div id="map">
         </div>
         <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
         <script src="js/leaflet.pattern.js"></script>
         <script src="js/leaflet-hash.js"></script>
@@ -31,9 +33,24 @@
         <script src="data/HuntapPetoboBangunandanAksesoris_1.js"></script>
         <script src="data/HuntapPetoboPipa_2.js"></script>
         <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[-0.9423269220192325,119.93361807488135],[-0.9328763541886276,119.9483124842949]]);
+        }).fitBounds([[-0.9374443228564414,119.9384598886096],[-0.9350816808987902,119.94213349096299]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -50,6 +67,7 @@
          }
          return tempDiv.innerHTML;
         }
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
@@ -67,6 +85,14 @@
         layer_OSMStandard_0;
         map.addLayer(layer_OSMStandard_0);
         function pop_HuntapPetoboBangunandanAksesoris_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
@@ -81,7 +107,8 @@
                         <td colspan="2">' + (feature.properties['Uk/Tipe'] !== null ? autolinker.link(feature.properties['Uk/Tipe'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Keterangan'] !== null ? autolinker.link(feature.properties['Keterangan'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">Keterangan</th>\
+                        <td>' + (feature.properties['Keterangan'] !== null ? autolinker.link(feature.properties['Keterangan'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
@@ -182,6 +209,14 @@
         bounds_group.addLayer(layer_HuntapPetoboBangunandanAksesoris_1);
         map.addLayer(layer_HuntapPetoboBangunandanAksesoris_1);
         function pop_HuntapPetoboPipa_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
@@ -286,6 +321,8 @@
         });
         bounds_group.addLayer(layer_HuntapPetoboPipa_2);
         map.addLayer(layer_HuntapPetoboPipa_2);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Huntap Petobo (Pipa)<br /><table><tr><td style="text-align: center;"><img src="legend/HuntapPetoboPipa_2_630.png" /></td><td>63</td></tr><tr><td style="text-align: center;"><img src="legend/HuntapPetoboPipa_2_901.png" /></td><td>90</td></tr><tr><td style="text-align: center;"><img src="legend/HuntapPetoboPipa_2_1102.png" /></td><td>110</td></tr><tr><td style="text-align: center;"><img src="legend/HuntapPetoboPipa_2_1603.png" /></td><td>160</td></tr><tr><td style="text-align: center;"><img src="legend/HuntapPetoboPipa_2_4.png" /></td><td></td></tr></table>': layer_HuntapPetoboPipa_2,'Huntap Petobo (Bangunan dan Aksesoris)<br /><table><tr><td style="text-align: center;"><img src="legend/HuntapPetoboBangunandanAksesoris_1_GateValve0.png" /></td><td>Gate Valve</td></tr><tr><td style="text-align: center;"><img src="legend/HuntapPetoboBangunandanAksesoris_1_Reservoir1.png" /></td><td>Reservoir</td></tr><tr><td style="text-align: center;"><img src="legend/HuntapPetoboBangunandanAksesoris_1_Tee2.png" /></td><td>Tee</td></tr><tr><td style="text-align: center;"><img src="legend/HuntapPetoboBangunandanAksesoris_1_3.png" /></td><td></td></tr></table>': layer_HuntapPetoboBangunandanAksesoris_1,"OSM Standard": layer_OSMStandard_0,}).addTo(map);
         setBounds();
         var i = 0;
         layer_HuntapPetoboBangunandanAksesoris_1.eachLayer(function(layer) {
